@@ -1,4 +1,5 @@
 const Encore = require('@symfony/webpack-encore');
+const Dotenv = require('dotenv-webpack');
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
 // It's useful when you use tools that rely on webpack.config.js file.
@@ -22,8 +23,6 @@ Encore
      */
    // .enableReactPreset()
     .addEntry('app', './assets/app.js')
-    .addEntry('minter', './assets/js/minter/minter-starter-files/src/index.js')
-  //  .addEntry('rep_react', './assets/js/rep_react.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')
@@ -66,7 +65,7 @@ Encore
     //.enableTypeScriptLoader()
 
     // uncomment if you use React
-    .enableReactPreset()
+   // .enableReactPreset()
 
     // uncomment to get integrity="..." attributes on your script & link tags
     // requires WebpackEncoreBundle 1.4 or higher

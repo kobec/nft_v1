@@ -5,14 +5,26 @@ doctrine:
         # IMPORTANT: You MUST configure your server version,
         # either here or in the DATABASE_URL env var (see .env file)
         #server_version: '13'
+        types:
+            user_user_id: 'App\Model\User\Entity\User\IdType'
+            user_user_email: 'App\Model\User\Entity\User\EmailType'
+            user_user_role: 'App\Model\User\Entity\User\RoleType'
+            contract_contract_id: 'App\Model\Contract\Entity\Contract\IdType'
+            contract_contract_standard: 'App\Model\Contract\Entity\Contract\StandardType'
     orm:
         auto_generate_proxy_classes: true
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
         auto_mapping: true
         mappings:
-            App:
+            User:
                 is_bundle: false
                 type: annotation
-                dir: '%kernel.project_dir%/src/Entity'
-                prefix: 'App\Entity'
-                alias: App
+                dir: '%kernel.project_dir%/src/Model/User/Entity'
+                prefix: 'App\Model\User\Entity'
+                alias: User
+            Contract:
+                 is_bundle: false
+                 type: annotation
+                 dir: '%kernel.project_dir%/src/Model/Contract/Entity'
+                 prefix: 'App\Model\Contract\Entity'
+                 alias: Contract

@@ -14,12 +14,25 @@ services:
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:
-        resource: '../src/'
-        exclude:
-            - '../src/DependencyInjection/'
-            - '../src/Entity/'
-            - '../src/Kernel.php'
-            - '../src/Tests/'
+        resource: '../src/*'
+        exclude: '../src/{DependencyInjection,Model/User/Entity,Model/Contract/Entity,Migrations,Tests,Kernel.php}'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    App\Controller\:
+        resource: '../src/Controller'
+        tags: ['controller.service_arguments']
+
+    Infrastructure\Dispatchers\EventDispatcherInterface:
+        class: Infrastructure\Dispatchers\Symfony\MessengerEventDispatcher
+
+    Infrastructure\CommandHandling\CommandBusInterface:
+        class: Infrastructure\CommandHandling\SymfonyCommandBus
+        autowire: true
+
+    App\Model\Contract\UseCase\CreateByParser\Handler:
+        class: App\Model\Contract\UseCase\CreateByParser\Handler
+        autowire: true
