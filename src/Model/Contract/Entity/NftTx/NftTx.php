@@ -132,4 +132,9 @@ class NftTx implements AggregateRoot
     {
         return new self($contract, $hash, $transactionIndex, $confirmations, $nonce, $timestamp, $token, $block, $transfer, $gas);
     }
+
+    public function getBlockNumber(): int
+    {
+        return $this->block->getNumber();
+    }
 }

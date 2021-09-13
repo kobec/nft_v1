@@ -35,7 +35,7 @@ class Block
 
     public function getNumber(): int
     {
-        return $this->number;
+        return (int)$this->number;
     }
 
     public function getHash(): string

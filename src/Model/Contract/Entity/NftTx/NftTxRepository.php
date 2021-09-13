@@ -30,13 +30,22 @@ final class NftTxRepository implements AggregateRoot
         $this->repo = $em->getRepository(NftTx::class);
     }
 
-    public function getByHash(string $hash): self
+    public function getByHash(string $hash): NftTx
     {
         /** @var self $nftTx */
         if (!$nftTx = $this->repo->findOneBy(['hash' => $hash])) {
             throw new EntityNotFoundException('Nft transaction is not found.');
         }
         return $nftTx;
+    }
+
+    public function getLastBlockNumber(): int
+    {
+        /** @var NftTx $nftTx */
+        if (!$nftTx = $this->repo->findOneBy([], ['block.number' => 'DESC'])) {
+            return 0;
+        }
+        return $nftTx->getBlockNumber();
     }
 
     public function add(NftTx $entity): void

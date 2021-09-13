@@ -12,6 +12,7 @@ use App\Model\Contract\Entity\NftTx\NftTxRepository;
 use App\Model\Contract\Entity\NftTx\Token;
 use App\Model\Contract\Entity\NftTx\Transfer;
 use Infrastructure\Http\Client\HttpClientInterface;
+use Model\EntityNotFoundException;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 
 class Handler
@@ -43,29 +44,37 @@ class Handler
             'contractaddress' => $this->parameters->get('ropsten.api.contract'),
             //'address'=>'0x92a26541e363c06fd20e65a3b6180b1319769512',
             'page'            => '1',
+            'startblock'      => $this->nftTxRepository->getLastBlockNumber() + 1,
             'offset'          => '100',
             'sort'            => 'asc',
             'apikey'          => $this->parameters->get('ropsten.api.key'),
         ];
         $uri = $escanApiUrl . '?' . http_build_query($parameters);
         $response = json_decode($this->httpClient->get($uri)->getContents(), true);
+        if ($response['status'] == '0') {//no transactions fount
+            return;
+        }
         if ($response['status'] != '1') {
             throw new \DomainException('Unable to parse nft transactions');
         }
         foreach ($response['result'] as $tx) {
-            $nftTx = NftTx::createByParser(
-                $contract,
-                $tx['hash'],
-                (int)$tx['transactionIndex'],
-                (int)$tx['confirmations'],
-                (int)$tx['nonce'],
-                (int)$tx['timeStamp'],
-                new Token((int)$tx['tokenID'], $tx['tokenName'], $tx['tokenSymbol'], (int)$tx['tokenDecimal']),
-                new Block((int)$tx['blockNumber'], $tx['blockHash']),
-                new Transfer($tx['from'], $tx['to']),
-                new Gas((int)$tx['gas'], (int)$tx['gasPrice'], (int)$tx['gasUsed'], (int)$tx['cumulativeGasUsed'])
-            );
-            $this->nftTxRepository->add($nftTx);
+            try {
+                $txEntity = $this->nftTxRepository->getByHash($tx['hash']);
+            } catch (EntityNotFoundException $e) {
+                $nftTx = NftTx::createByParser(
+                    $contract,
+                    $tx['hash'],
+                    (int)$tx['transactionIndex'],
+                    (int)$tx['confirmations'],
+                    (int)$tx['nonce'],
+                    (int)$tx['timeStamp'],
+                    new Token((int)$tx['tokenID'], $tx['tokenName'], $tx['tokenSymbol'], (int)$tx['tokenDecimal']),
+                    new Block((int)$tx['blockNumber'], $tx['blockHash']),
+                    new Transfer($tx['from'], $tx['to']),
+                    new Gas((int)$tx['gas'], (int)$tx['gasPrice'], (int)$tx['gasUsed'], (int)$tx['cumulativeGasUsed'])
+                );
+                $this->nftTxRepository->add($nftTx);
+            }
         }
     }
 }
