@@ -2,11 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Model\Contract\Entity\Contract;
+namespace App\Model\Contract\Entity\NftTx;
 
-use Doctrine\Common\Collections\ArrayCollection;
+use App\Model\Contract\Entity\Contract\Contract;
 use Doctrine\ORM\Mapping as ORM;
+use Model\AggregateRoot;
 use Model\DatesColumnsTrait;
+use Model\EventsTrait;
 use Ramsey\Uuid\Uuid;
 
 /**
@@ -16,8 +18,11 @@ use Ramsey\Uuid\Uuid;
  *     @ORM\UniqueConstraint(columns={"hash"})
  * })
  */
-class NftTx
+class NftTx implements AggregateRoot
 {
+
+    use EventsTrait;
+
     /**
      * @var string
      * @ORM\Column(type="guid")
@@ -27,7 +32,7 @@ class NftTx
 
     /**
      * @var Contract
-     * @ORM\ManyToOne(targetEntity="Contract", inversedBy="nft_txs")
+     * @ORM\ManyToOne(targetEntity="App\Model\Contract\Entity\Contract\Contract", inversedBy="nft_txs")
      * @ORM\JoinColumn(name="contract_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private $contract;
@@ -57,6 +62,12 @@ class NftTx
     private $nonce;
 
     /**
+     * @var $timeStamp
+     * @ORM\Column(type="integer", nullable=false)
+     */
+    private $timeStamp;
+
+    /**
      * @var Block
      * @ORM\Embedded(class="Block")
      */
@@ -83,14 +94,16 @@ class NftTx
     use DatesColumnsTrait;
 
 
-    public function __construct(Contract $contract,
-                                string $hash,
-                                int $transactionIndex,
-                                int $confirmations,
-                                int $nonce,
-                                Block $block,
-                                Transfer $transfer,
-                                Gas $gas
+    private function __construct(Contract $contract,
+                                 string $hash,
+                                 int $transactionIndex,
+                                 int $confirmations,
+                                 int $nonce,
+                                 int $timestamp,
+                                 Token $token,
+                                 Block $block,
+                                 Transfer $transfer,
+                                 Gas $gas
     )
     {
         $this->id = Uuid::uuid4()->toString();
@@ -99,8 +112,24 @@ class NftTx
         $this->transactionIndex = $transactionIndex;
         $this->confirmations = $confirmations;
         $this->nonce = $nonce;
+        $this->timeStamp = $timestamp;
+        $this->token = $token;
         $this->block = $block;
         $this->transfer = $transfer;
         $this->gas = $gas;
+    }
+
+    public static function createByParser(Contract $contract,
+                                          string $hash,
+                                          int $transactionIndex,
+                                          int $confirmations,
+                                          int $nonce,
+                                          int $timestamp,
+                                          Token $token,
+                                          Block $block,
+                                          Transfer $transfer,
+                                          Gas $gas): self
+    {
+        return new self($contract, $hash, $transactionIndex, $confirmations, $nonce, $timestamp, $token, $block, $transfer, $gas);
     }
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Model\Contract\Entity\Contract;
+namespace App\Model\Contract\Entity\NftTx;
 
 use Doctrine\ORM\Mapping as ORM;
 use Webmozart\Assert\Assert;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Model\Contract\Entity\Contract;
+namespace App\Model\Contract\Entity\NftTx;
 
 use Doctrine\ORM\Mapping as ORM;
 use Webmozart\Assert\Assert;
@@ -15,25 +15,25 @@ class Gas
 
     /**
      * @var int
-     * @ORM\Column(type="integer", nullable=false)
+     * @ORM\Column(type="bigint", nullable=false)
      */
     private $gas;
 
     /**
      * @var int
-     * @ORM\Column(type="integer", nullable=false)
+     * @ORM\Column(type="bigint", nullable=false)
      */
     private $price;
 
     /**
      * @var int
-     * @ORM\Column(type="integer", nullable=false)
+     * @ORM\Column(type="bigint", nullable=false)
      */
     private $used;
 
     /**
      * @var int
-     * @ORM\Column(type="integer", nullable=false)
+     * @ORM\Column(type="bigint", nullable=false)
      */
     private $cumulativeGasUsed;
 

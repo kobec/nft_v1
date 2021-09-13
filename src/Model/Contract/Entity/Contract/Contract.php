@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Contract\Entity\Contract;
 
+use App\Model\Contract\Entity\NftTx\NftTx;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Model\AggregateRoot;
@@ -49,7 +50,7 @@ class Contract implements AggregateRoot
 
     /**
      * @var NftTx[]|ArrayCollection
-     * @ORM\OneToMany(targetEntity="NftTx", mappedBy="contract", orphanRemoval=true, cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="App\Model\Contract\Entity\NftTx\NftTx", mappedBy="contract", orphanRemoval=true, cascade={"persist"})
      */
     private $nftTxs;
 

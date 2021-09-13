@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Model\Contract\Entity\Contract;
+namespace App\Model\Contract\Entity\NftTx;
 
 use Doctrine\ORM\Mapping as ORM;
 use Webmozart\Assert\Assert;
@@ -39,10 +39,10 @@ class Token
 
     public function __construct(int $id, string $name, string $symbol, int $decimal)
     {
-        Assert::notEmpty($id);
+        Assert::integer($id);
         Assert::notEmpty($name);
         Assert::notEmpty($symbol);
-        Assert::notEmpty($decimal);
+        Assert::integer($decimal);
 
         $this->id = $id;
         $this->name = $name;
