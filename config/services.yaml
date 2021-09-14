@@ -19,6 +19,8 @@ services:
     App\:
         resource: '../src/*'
         exclude: '../src/{DependencyInjection,Model/User/Entity,Model/Contract/Entity,Migrations,Tests,Kernel.php}'
+    Infrastructure\:
+        resource: '../infrastructure/*'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
@@ -31,6 +33,10 @@ services:
 
     Infrastructure\Dispatchers\EventDispatcherInterface:
         class: Infrastructure\Dispatchers\Symfony\MessengerEventDispatcher
+        autowire: true
+
+    App\Model\EventDispatcher:
+        class: App\Event\Dispatcher\MessengerEventDispatcher
 
     Infrastructure\CommandHandling\CommandBusInterface:
         class: Infrastructure\CommandHandling\SymfonyCommandBus
@@ -43,4 +49,5 @@ services:
     App\Model\User\Entity\User\UserRepository: ~
     App\Model\Contract\Entity\Contract\ContractRepository: ~
     App\Model\Contract\Entity\NftTx\NftTxRepository: ~
+    App\Model\Contract\Entity\Nft\NftRepository: ~
 

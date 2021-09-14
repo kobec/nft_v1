@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Contract\Entity\Contract;
 
+use App\Model\Contract\Entity\Nft\Nft;
 use App\Model\Contract\Entity\NftTx\NftTx;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -22,6 +23,7 @@ class Contract implements AggregateRoot
 {
 
     use EventsTrait;
+
     /**
      * @ORM\Column(type="contract_contract_id")
      * @ORM\Id
@@ -41,6 +43,12 @@ class Contract implements AggregateRoot
     private $standard;
 
     /**
+     * @var string
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $abi;
+
+    /**
      * @ORM\Version()
      * @ORM\Column(type="integer")
      */
@@ -54,17 +62,29 @@ class Contract implements AggregateRoot
      */
     private $nftTxs;
 
+    /**
+     * @var Nft[]|ArrayCollection
+     * @ORM\OneToMany(targetEntity="App\Model\Contract\Entity\Nft\Nft", mappedBy="contract", orphanRemoval=true, cascade={"persist"})
+     */
+    private $nfts;
+
     private function __construct(Id $id, string $address, Standard $standard)
     {
         $this->id = $id;
         $this->address = $address;
         $this->standard = $standard;
         $this->nftTxs = new ArrayCollection();
+        $this->nfts = new ArrayCollection();
     }
 
     public function addNftTx(NftTx $nftTx): void
     {
         $this->nftTxs->add($nftTx);
+    }
+
+    public function addNft(Nft $nft): void
+    {
+        $this->nftTxs->add($nft);
     }
 
     public static function create(Id $id, string $address, Standard $standard): self
@@ -82,5 +102,15 @@ class Contract implements AggregateRoot
     public function getStandard(): ?Standard
     {
         return $this->standard;
+    }
+
+    public function getAddress(): string
+    {
+        return $this->address;
+    }
+
+    public function getJsonAbi(): string
+    {
+        return json_encode($this->abi);
     }
 }

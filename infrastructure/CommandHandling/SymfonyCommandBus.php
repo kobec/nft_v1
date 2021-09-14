@@ -3,8 +3,6 @@
 
 namespace Infrastructure\CommandHandling;
 
-use App\Model\Contract\UseCase\NftTx\CreateByParser\Command;
-use App\Model\Contract\UseCase\NftTx\CreateByParser\Handler;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Contracts\Service\ServiceSubscriberInterface;
@@ -27,7 +25,8 @@ class SymfonyCommandBus implements CommandBusInterface, ServiceSubscriberInterfa
     public static function getSubscribedServices(): array
     {
         return [
-            Command::class => Handler::class
+            \App\Model\Contract\UseCase\NftTx\CreateByParser\Command::class                 => \App\Model\Contract\UseCase\NftTx\CreateByParser\Handler::class,
+            \App\Model\Contract\UseCase\Nft\CreateByNftTxTransactionCallBack\Command::class => \App\Model\Contract\UseCase\Nft\CreateByNftTxTransactionCallBack\Handler::class,
         ];
     }
 
@@ -53,8 +52,8 @@ class SymfonyCommandBus implements CommandBusInterface, ServiceSubscriberInterfa
     public function dispatchNow2($command)
     {
         $commandClass = get_class($command);
-      /*  $handlerClass = str_replace('\Command', '\Handler', $commandClass);
-        dd('dd');*/
+        /*  $handlerClass = str_replace('\Command', '\Handler', $commandClass);
+          dd('dd');*/
 
         if (array_key_exists($commandClass, $this->commandHandlers)) {
             $handler = $this->container->get($this->commandHandlers[$commandClass]);
@@ -63,16 +62,16 @@ class SymfonyCommandBus implements CommandBusInterface, ServiceSubscriberInterfa
         try {
             //try by namespace
             $handlerClass = str_replace('\Command', '\Handler', $commandClass);
-           // $h=new $handlerClass;
-           // dd($h);
+            // $h=new $handlerClass;
+            // dd($h);
             $containerBuilder = new ContainerBuilder();
-           $containerBuilder->register($handlerClass,$handlerClass)->setPublic(true);
-           // $containerBuilder->resolveServices($handlerClass);
-          // // $containerBuilder->registerForAutoconfiguration($handlerClass);
+            $containerBuilder->register($handlerClass, $handlerClass)->setPublic(true);
+            // $containerBuilder->resolveServices($handlerClass);
+            // // $containerBuilder->registerForAutoconfiguration($handlerClass);
             $containerBuilder->compile();
             $handler = $containerBuilder->get($handlerClass);
             return $handler->handle($command);
-        }catch (\Throwable $throwable){
+        } catch (\Throwable $throwable) {
             dd($throwable);
             throw new CommandBusException('no handlers registered to this Command');
         }

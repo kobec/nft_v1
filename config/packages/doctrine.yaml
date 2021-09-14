@@ -10,6 +10,8 @@ doctrine:
             user_user_email: 'App\Model\User\Entity\User\EmailType'
             user_user_role: 'App\Model\User\Entity\User\RoleType'
             contract_contract_id: 'App\Model\Contract\Entity\Contract\IdType'
+            contract_nft_id: 'App\Model\Contract\Entity\Nft\IdType'
+            contract_nft_tx_id: 'App\Model\Contract\Entity\NftTx\IdType'
             contract_contract_standard: 'App\Model\Contract\Entity\Contract\StandardType'
     orm:
         auto_generate_proxy_classes: true

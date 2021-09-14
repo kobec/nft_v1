@@ -10,6 +10,7 @@ use Symfony\Component\DependencyInjection\Container;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Web3\Contract;
 
 class WelcomeController extends AbstractController
 {
@@ -19,6 +20,18 @@ class WelcomeController extends AbstractController
      */
     public function index(CommandBusInterface $commandBus): Response
     {
+        $cmd=new \App\Model\Contract\UseCase\NftTx\CreateByParser\Command();
+        $commandBus->dispatch($cmd);
+        dd('1');
+        $contractAddress='0xfaCf2DeE4197560D74E26C1158D17152b5384F2e';
+        $abi=file_get_contents('contract-abi.json');
+        $contract = new Contract('https://eth-ropsten.alchemyapi.io/v2/nnPnXXYn1e2Jb1wymxwennbIZ6RLQJP6', $abi);
+
+        $c=$contract->at($contractAddress)->call('tokenURI',1,function ($data){
+         //   print_r($data);
+        });
+        dd($c);
+
         $cmd=new \App\Model\Contract\UseCase\NftTx\CreateByParser\Command();
         $commandBus->dispatch($cmd);
         dd('333');

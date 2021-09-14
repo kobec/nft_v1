@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Model\Contract\Entity\NftTx;
 
 use App\Model\Contract\Entity\Contract\Contract;
+use App\Model\Contract\Entity\NftTx\Event\NftTxCreatedEvent;
 use Doctrine\ORM\Mapping as ORM;
 use Model\AggregateRoot;
 use Model\DatesColumnsTrait;
@@ -14,7 +15,7 @@ use Ramsey\Uuid\Uuid;
 /**
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
- * @ORM\Table(name="contract_contract_nft_txs", uniqueConstraints={
+ * @ORM\Table(name="contract_nft_txs", uniqueConstraints={
  *     @ORM\UniqueConstraint(columns={"hash"})
  * })
  */
@@ -24,8 +25,7 @@ class NftTx implements AggregateRoot
     use EventsTrait;
 
     /**
-     * @var string
-     * @ORM\Column(type="guid")
+     * @ORM\Column(type="contract_nft_tx_id")
      * @ORM\Id
      */
     private $id;
@@ -106,7 +106,8 @@ class NftTx implements AggregateRoot
                                  Gas $gas
     )
     {
-        $this->id = Uuid::uuid4()->toString();
+        $id = Id::next();
+        $this->id = $id;
         $this->contract = $contract;
         $this->hash = $hash;
         $this->transactionIndex = $transactionIndex;
@@ -117,6 +118,7 @@ class NftTx implements AggregateRoot
         $this->block = $block;
         $this->transfer = $transfer;
         $this->gas = $gas;
+        $this->recordEvent(new NftTxCreatedEvent($this));
     }
 
     public static function createByParser(Contract $contract,
@@ -136,5 +138,20 @@ class NftTx implements AggregateRoot
     public function getBlockNumber(): int
     {
         return $this->block->getNumber();
+    }
+
+    public function getId(): Id
+    {
+        return $this->id;
+    }
+
+    public function getContractId(): \App\Model\Contract\Entity\Contract\Id
+    {
+        return $this->contract->getId();
+    }
+
+    public function getToken(): Token
+    {
+        return $this->token;
     }
 }

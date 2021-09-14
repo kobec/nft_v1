@@ -100,6 +100,9 @@
     "guzzlehttp/psr7": {
         "version": "2.0.0"
     },
+    "kornrunner/keccak": {
+        "version": "1.1.0"
+    },
     "laminas/laminas-code": {
         "version": "4.4.2"
     },
@@ -126,6 +129,9 @@
     },
     "phpdocumentor/type-resolver": {
         "version": "1.4.0"
+    },
+    "phpseclib/phpseclib": {
+        "version": "2.0.33"
     },
     "phpspec/prophecy": {
         "version": "1.13.0"
@@ -191,6 +197,9 @@
     },
     "ramsey/uuid": {
         "version": "4.2.1"
+    },
+    "sc0vu/web3.php": {
+        "version": "0.1.4"
     },
     "sebastian/cli-parser": {
         "version": "1.0.1"
