@@ -7,9 +7,9 @@ namespace App\Model\Contract\Entity\NftTx;
 use App\Model\Contract\Entity\Contract\Contract;
 use App\Model\Contract\Entity\NftTx\Event\NftTxCreatedEvent;
 use Doctrine\ORM\Mapping as ORM;
-use Model\AggregateRoot;
-use Model\DatesColumnsTrait;
-use Model\EventsTrait;
+use App\Model\AggregateRoot;
+use App\Model\DatesColumnsTrait;
+use App\Model\EventsTrait;
 use Ramsey\Uuid\Uuid;
 
 /**

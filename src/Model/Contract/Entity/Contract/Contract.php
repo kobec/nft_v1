@@ -8,9 +8,9 @@ use App\Model\Contract\Entity\Nft\Nft;
 use App\Model\Contract\Entity\NftTx\NftTx;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Model\AggregateRoot;
-use Model\DatesColumnsTrait;
-use Model\EventsTrait;
+use App\Model\AggregateRoot;
+use App\Model\DatesColumnsTrait;
+use App\Model\EventsTrait;
 
 /**
  * @ORM\Entity

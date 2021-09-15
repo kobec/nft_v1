@@ -7,9 +7,9 @@ namespace App\Model\Contract\Entity\NftTx;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Infrastructure\Dispatchers\EventDispatcherInterface;
-use Model\AggregateRoot;
-use Model\EntityNotFoundException;
-use Model\EventsTrait;
+use App\Model\AggregateRoot;
+use App\Model\EntityNotFoundException;
+use App\Model\EventsTrait;
 
 final class NftTxRepository implements AggregateRoot
 {

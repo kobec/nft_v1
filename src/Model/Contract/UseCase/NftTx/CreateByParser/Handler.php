@@ -12,7 +12,7 @@ use App\Model\Contract\Entity\NftTx\NftTxRepository;
 use App\Model\Contract\Entity\NftTx\Token;
 use App\Model\Contract\Entity\NftTx\Transfer;
 use Infrastructure\Http\Client\HttpClientInterface;
-use Model\EntityNotFoundException;
+use App\Model\EntityNotFoundException;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 
 class Handler

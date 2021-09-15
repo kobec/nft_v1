@@ -7,9 +7,9 @@ namespace App\Model\Contract\Entity\Contract;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Infrastructure\Dispatchers\EventDispatcherInterface;
-use Model\AggregateRoot;
-use Model\EntityNotFoundException;
-use Model\EventsTrait;
+use App\Model\AggregateRoot;
+use App\Model\EntityNotFoundException;
+use App\Model\EventsTrait;
 
 final class ContractRepository implements AggregateRoot
 {

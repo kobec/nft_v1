@@ -5,15 +5,10 @@ declare(strict_types=1);
 namespace App\Model\Contract\Entity\Nft;
 
 use App\Model\Contract\Entity\Contract\Contract;
-use App\Model\Contract\Entity\NftTx\Block;
-use App\Model\Contract\Entity\NftTx\Gas;
-use App\Model\Contract\Entity\NftTx\Token;
-use App\Model\Contract\Entity\NftTx\Transfer;
 use Doctrine\ORM\Mapping as ORM;
-use Model\AggregateRoot;
-use Model\DatesColumnsTrait;
-use Model\EventsTrait;
-use Ramsey\Uuid\Uuid;
+use App\Model\AggregateRoot;
+use App\Model\DatesColumnsTrait;
+use App\Model\EventsTrait;
 
 /**
  * @ORM\Entity
@@ -55,6 +50,12 @@ class Nft implements AggregateRoot
 
     use DatesColumnsTrait;
 
+    /**
+     * @ORM\Version()
+     * @ORM\Column(type="integer")
+     */
+    private $version;
+
 
     private function __construct(Contract $contract,
                                  int $tokenId,
@@ -67,10 +68,19 @@ class Nft implements AggregateRoot
         $this->data = $data;
     }
 
-    public static function CreateByNftTxTransactionCallBack(Contract $contract,
+    public static function createByNftTxTransactionCallBack(Contract $contract,
                                                             int $tokenId,
                                                             array $data = null): self
     {
         return new self($contract, $tokenId, $data);
+    }
+
+    public function editByNftTxTransactionCallBack(array $data)
+    {
+        $this->data = $data;
+    }
+
+    public function getData(){
+        return $this->data;
     }
 }
