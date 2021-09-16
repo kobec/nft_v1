@@ -38,6 +38,7 @@ class NftController extends AbstractController
         return $this->json([
             'items'      => array_map(static function (array $item) {
                 return [
+                    'id'               => $item['nft_id'],
                     'contract_address' => $item['contract_address'],
                     'token_id'         => $item['token_id'],
                     'token_data'       => json_decode($item['token_data'], true),

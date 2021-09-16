@@ -30,7 +30,7 @@ class NftFetcher
     {
         $qb = $this->createQb()
             ->select(
-                'contract.address as contract_address,nft.token_id as token_id,nft.data as token_data'
+                'contract.address as contract_address,nft.id as nft_id,nft.token_id as token_id,nft.data as token_data'
             )
             ->from('contract_nft', 'nft')
             ->leftJoin('nft', 'contract_contracts', 'contract', 'nft.contract_id = contract.id')
