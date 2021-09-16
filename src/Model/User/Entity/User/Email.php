@@ -28,4 +28,8 @@ class Email
     {
         return $this->getValue() === $other->getValue();
     }
+
+    public function __toString():string{
+        return $this->value;
+    }
 }

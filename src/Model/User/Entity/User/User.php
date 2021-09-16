@@ -6,6 +6,9 @@ namespace App\Model\User\Entity\User;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity
@@ -14,8 +17,12 @@ use Doctrine\ORM\Mapping as ORM;
  *     @ORM\UniqueConstraint(columns={"email"}),
  *     @ORM\UniqueConstraint(columns={"reset_token_token"})
  * })
+ * @method string getUserIdentifier()
+ * @method string hashPassword(PasswordAuthenticatedUserInterface $user, string $plainPassword)
+ * @method bool isPasswordValid(PasswordAuthenticatedUserInterface $user, string $plainPassword)
+ * @method bool needsRehash(PasswordAuthenticatedUserInterface $user)
  */
-class User
+class User implements UserInterface,UserPasswordHasherInterface
 {
     public const STATUS_WAIT = 'wait';
     public const STATUS_ACTIVE = 'active';
@@ -96,13 +103,18 @@ class User
         $this->networks = new ArrayCollection();
     }
 
-    public static function create(Id $id, \DateTimeImmutable $date, Name $name, Email $email, string $hash): self
+    public static function create(Id $id, \DateTimeImmutable $date, Name $name, Email $email/*, string $hash*/): self
     {
         $user = new self($id, $date, $name);
         $user->email = $email;
-        $user->passwordHash = $hash;
+        //  $user->passwordHash = $hash;
         $user->status = self::STATUS_ACTIVE;
         return $user;
+    }
+
+    public function setPassword(string $password)
+    {
+        $this->passwordHash = $password;
     }
 
     public static function signUpByEmail(Id $id, \DateTimeImmutable $date, Name $name, Email $email, string $hash, string $token): self
@@ -245,12 +257,12 @@ class User
 
     public function isWait(): bool
     {
-         return $this->status === self::STATUS_WAIT;
+        return $this->status === self::STATUS_WAIT;
     }
 
     public function isActive(): bool
     {
-         return $this->status === self::STATUS_ACTIVE;
+        return $this->status === self::STATUS_ACTIVE;
     }
 
     public function isBlocked(): bool
@@ -329,5 +341,34 @@ class User
         if ($this->resetToken->isEmpty()) {
             $this->resetToken = null;
         }
+    }
+
+
+    public function getSalt()
+    {
+        return null;
+    }
+
+    public function getPassword()
+    {
+        return $this->passwordHash;
+    }
+
+    public function getRoles()
+    {
+        return array('ROLE_USER');
+    }
+
+    public function eraseCredentials()
+    {
+    }
+
+    public function getUsername()
+    {
+        return $this->email->getValue();
+    }
+
+    public function getUserIdentifier(){
+        return $this->id->getValue();
     }
 }
