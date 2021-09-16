@@ -2,25 +2,48 @@
 
 namespace App\Controller\Api\V1;
 
-use GuzzleHttp\Client;
-use Infrastructure\CommandHandling\CommandBusInterface;
+use App\Controller\Api\PaginationSerializer;
+use App\ReadModel\Contract\Nft\NftFetcher;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Web3\Contract;
 
 class NftController extends AbstractController
 {
 
+    private const PER_PAGE = 3;
+    private NftFetcher $nftFetcher;
+    private ContainerBagInterface $parameters;
+
+    public function __construct(NftFetcher $nftFetcher, ContainerBagInterface $configurator)
+    {
+        $this->nftFetcher = $nftFetcher;
+        $this->parameters = $configurator;
+    }
+
     /**
      * @Route("/api/v1/collected", name="nft.collected")
      */
-    public function colleted(): JsonResponse
+    public function colleted(Request $request): JsonResponse
     {
-        return new JsonResponse([
-            ['name'=>'test1','image'=>'https://gateway.pinata.cloud/ipfs/QmU2r6tzXQFixoDEhSFwmtBpjvLavnoy7hBr5pTxrqmv6G'],
-            ['name'=>'test2','image'=>'https://gateway.pinata.cloud/ipfs/QmU2r6tzXQFixoDEhSFwmtBpjvLavnoy7hBr5pTxrqmv6G'],
+        $contract = $this->parameters->get('ropsten.api.contract');
+        $pagination = $this->nftFetcher->paginatedForContract(
+            $contract,
+            $request->query->getInt('page', 1),
+            self::PER_PAGE
+        );
+
+        return $this->json([
+            'items'      => array_map(static function (array $item) {
+                return [
+                    'contract_address' => $item['contract_address'],
+                    'token_id'         => $item['token_id'],
+                    'token_data'       => json_decode($item['token_data'], true),
+                ];
+            }, (array)$pagination->getItems()),
+            'pagination' => PaginationSerializer::toArray($pagination),
         ]);
     }
 }
