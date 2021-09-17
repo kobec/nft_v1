@@ -1,0 +1,48 @@
+version: '3.8'
+services:
+    mysql:
+        image: mysql/mysql-server:8.0
+        ports:
+            - "127.0.0.1:8306:3306"
+        environment:
+            - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+            - MYSQL_USER=${DB_USERNAME}
+            - MYSQL_DATABASE=${DB_DATABASE}
+            - MYSQL_PASSWORD=${DB_PASSWORD}
+        volumes:
+            - nft_mysql:/var/lib/mysql:delegated
+            - ./:/var/www
+        networks:
+            - nft
+        command: --max_allowed_packet=256M --collation-server=utf8mb4_unicode_ci --character-set-server=utf8mb4 --default-authentication-plugin=mysql_native_password
+    redis:
+        image: redis:6.2-alpine
+        ports:
+            - "127.0.0.1:8379:6379"
+        volumes:
+            - nft_redis:/data:delegated
+        networks:
+            - nft
+    adminer:
+        image: adminer:latest
+        ports:
+            - "127.0.0.1:8880:8080"
+        environment:
+            - ADMINER_DEFAULT_SERVER=mysql
+        networks:
+            - nft
+    mailhog:
+        image: mailhog/mailhog:latest
+        ports:
+            - "127.0.0.1:1825:1025"
+            - "127.0.0.1:8825:8025"
+        networks:
+            - nft
+networks:
+    nft:
+        driver: bridge
+volumes:
+    nft_mysql:
+        driver: local
+    nft_redis:
+        driver: local
