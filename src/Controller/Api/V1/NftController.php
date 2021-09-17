@@ -3,6 +3,7 @@
 namespace App\Controller\Api\V1;
 
 use App\Controller\Api\PaginationSerializer;
+use App\ReadModel\Contract\ContractFetcher;
 use App\ReadModel\Contract\Nft\NftFetcher;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
@@ -17,7 +18,8 @@ class NftController extends AbstractController
     private NftFetcher $nftFetcher;
     private ContainerBagInterface $parameters;
 
-    public function __construct(NftFetcher $nftFetcher, ContainerBagInterface $configurator)
+    public function __construct(NftFetcher $nftFetcher,
+                                ContainerBagInterface $configurator)
     {
         $this->nftFetcher = $nftFetcher;
         $this->parameters = $configurator;
@@ -46,5 +48,17 @@ class NftController extends AbstractController
             }, (array)$pagination->getItems()),
             'pagination' => PaginationSerializer::toArray($pagination),
         ]);
+    }
+
+    /**
+     * @Route("/api/v1/assets/{contractAddress}/{tokenId}", name="nft.item")
+     */
+    public function nft(string $contractAddress, int $tokenId){
+        try {
+            $nft=$this->nftFetcher->getByContractAddressAndTokenId($contractAddress,$tokenId);
+            return $this->json($nft->toArray());
+        }catch (\Throwable $throwable){
+            return $this->json($throwable->getMessage(),$throwable->getCode());
+        }
     }
 }

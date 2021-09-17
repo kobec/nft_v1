@@ -6,5 +6,5 @@ namespace App\ReadModel;
 
 class NotFoundException extends \LogicException
 {
-
+    protected $code = 404;
 }

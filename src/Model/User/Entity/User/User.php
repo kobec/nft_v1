@@ -17,7 +17,6 @@ use Symfony\Component\Security\Core\User\UserInterface;
  *     @ORM\UniqueConstraint(columns={"email"}),
  *     @ORM\UniqueConstraint(columns={"reset_token_token"})
  * })
- * @method string getUserIdentifier()
  * @method string hashPassword(PasswordAuthenticatedUserInterface $user, string $plainPassword)
  * @method bool isPasswordValid(PasswordAuthenticatedUserInterface $user, string $plainPassword)
  * @method bool needsRehash(PasswordAuthenticatedUserInterface $user)
