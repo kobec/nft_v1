@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3957de18602834b9041addcefa2c96eb",
+    "content-hash": "9388d8a19517b62f05e933c630269829",
     "packages": [
         {
             "name": "brick/math",
@@ -138,6 +138,101 @@
                 }
             ],
             "time": "2021-08-17T13:49:14+00:00"
+        },
+        {
+            "name": "digitaldonkey/ecverify",
+            "version": "1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/digitaldonkey/ecverify.git",
+                "reference": "fe873f7c1d9662bac9fb6d379d1212954b35dcce"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/digitaldonkey/ecverify/zipball/fe873f7c1d9662bac9fb6d379d1212954b35dcce",
+                "reference": "fe873f7c1d9662bac9fb6d379d1212954b35dcce",
+                "shasum": ""
+            },
+            "require": {
+                "kornrunner/keccak": "^1.0",
+                "php": ">=7",
+                "simplito/elliptic-php": "^1.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^4.0 || ^5.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Ethereum\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Thorsten Krug",
+                    "email": "thorsten.krug@consensys.net"
+                }
+            ],
+            "description": "A library integrating Ethereum with typed PHP.",
+            "support": {
+                "issues": "https://github.com/digitaldonkey/ecverify/issues",
+                "source": "https://github.com/digitaldonkey/ecverify/tree/master"
+            },
+            "time": "2018-05-18T17:55:12+00:00"
+        },
+        {
+            "name": "digitaldonkey/ethereum-php",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/digitaldonkey/ethereum-php.git",
+                "reference": "01035432730acce73c93cda2e46c08fc2b52e615"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/digitaldonkey/ethereum-php/zipball/01035432730acce73c93cda2e46c08fc2b52e615",
+                "reference": "01035432730acce73c93cda2e46c08fc2b52e615",
+                "shasum": ""
+            },
+            "require": {
+                "digitaldonkey/ecverify": "1.0",
+                "ext-json": "*",
+                "graze/guzzle-jsonrpc": "~3.0",
+                "kornrunner/keccak": "^1.0",
+                "pear/math_biginteger": "^1.0",
+                "php": ">=7.1"
+            },
+            "require-dev": {
+                "gossi/php-code-generator": "^0.5.0",
+                "phpunit/phpunit": "^4.0 || ^5.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Ethereum\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Thorsten Krug",
+                    "email": "thorsten.krug@consensys.net"
+                }
+            ],
+            "description": "A library integrating Ethereum with typed PHP.",
+            "support": {
+                "issues": "https://github.com/digitaldonkey/ethereum-php/issues",
+                "source": "https://github.com/digitaldonkey/ethereum-php/tree/master"
+            },
+            "time": "2021-06-15T17:50:32+00:00"
         },
         {
             "name": "doctrine/annotations",
@@ -1650,6 +1745,69 @@
             "time": "2021-05-22T16:11:15+00:00"
         },
         {
+            "name": "graze/guzzle-jsonrpc",
+            "version": "3.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/graze/guzzle-jsonrpc.git",
+                "reference": "c4513b7659534792b906723158a8388f54275a61"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/graze/guzzle-jsonrpc/zipball/c4513b7659534792b906723158a8388f54275a61",
+                "reference": "c4513b7659534792b906723158a8388f54275a61",
+                "shasum": ""
+            },
+            "require": {
+                "guzzlehttp/guzzle": "^6.0",
+                "guzzlehttp/promises": "^1.0",
+                "php": ">=5.5",
+                "psr/http-message": "^1.0"
+            },
+            "require-dev": {
+                "adlawson/timezone": "~1.0",
+                "fabpot/php-cs-fixer": "~0.5",
+                "mockery/mockery": "~0.9",
+                "phpunit/phpunit": "~4.3"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/functions_include.php"
+                ],
+                "psr-4": {
+                    "Graze\\GuzzleHttp\\JsonRpc\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Graze tech team",
+                    "homepage": "https://github.com/graze/guzzle-jsonrpc/graphs/contributors"
+                }
+            ],
+            "description": "JSON-RPC 2.0 client for Guzzle",
+            "homepage": "https://github.com/graze/guzzle-jsonrpc",
+            "keywords": [
+                "Guzzle",
+                "guzzlehttp",
+                "http",
+                "json",
+                "json-rpc",
+                "jsonrpc",
+                "ring",
+                "rpc"
+            ],
+            "support": {
+                "issues": "https://github.com/graze/guzzle-jsonrpc/issues",
+                "source": "https://github.com/graze/guzzle-jsonrpc/tree/master"
+            },
+            "time": "2016-02-16T15:18:21+00:00"
+        },
+        {
             "name": "guzzlehttp/guzzle",
             "version": "6.5.5",
             "source": {
@@ -2592,6 +2750,59 @@
             "time": "2021-04-20T08:27:05+00:00"
         },
         {
+            "name": "pear/math_biginteger",
+            "version": "v1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/pear/Math_BigInteger.git",
+                "reference": "33d4357543037a458fad3e8c837a01b93104e592"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/pear/Math_BigInteger/zipball/33d4357543037a458fad3e8c837a01b93104e592",
+                "reference": "33d4357543037a458fad3e8c837a01b93104e592",
+                "shasum": ""
+            },
+            "require": {
+                "ext-pcre": "*",
+                "php": ">=4.2.0"
+            },
+            "suggest": {
+                "ext-bcmath": "Allows using the BCMath extension internally for computation. Faster than native implementation.",
+                "ext-gmp": "Allows using the GNU Multiple Precision extension internally for computation. If you are doing a lot of computation this is the recommended extension."
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "Math_": "./"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jim Wigginton",
+                    "email": "terrafrost@php.net"
+                }
+            ],
+            "description": "Pure-PHP arbitrary precission integer arithmetic library. If GMP or BCMath are available they are used.",
+            "homepage": "https://github.com/pear/Math_BigInteger",
+            "keywords": [
+                "arbitrary",
+                "bcmath",
+                "gmp",
+                "integer",
+                "precision"
+            ],
+            "support": {
+                "issues": "http://pear.php.net/bugs/search.php?cmd=display&package_name[]=Math_BigInteger",
+                "source": "https://github.com/pear/Math_BigInteger"
+            },
+            "time": "2016-04-12T05:46:52+00:00"
+        },
+        {
             "name": "phpdocumentor/reflection-common",
             "version": "2.2.0",
             "source": {
@@ -3503,6 +3714,153 @@
                 "source": "https://github.com/sensiolabs/SensioFrameworkExtraBundle/tree/v6.2.0"
             },
             "time": "2021-09-06T13:24:35+00:00"
+        },
+        {
+            "name": "simplito/bigint-wrapper-php",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/simplito/bigint-wrapper-php.git",
+                "reference": "cf21ec76d33f103add487b3eadbd9f5033a25930"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/simplito/bigint-wrapper-php/zipball/cf21ec76d33f103add487b3eadbd9f5033a25930",
+                "reference": "cf21ec76d33f103add487b3eadbd9f5033a25930",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "BI\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Simplito Team",
+                    "email": "s.smyczynski@simplito.com",
+                    "homepage": "https://simplito.com"
+                }
+            ],
+            "description": "Common interface for php_gmp and php_bcmath modules",
+            "support": {
+                "issues": "https://github.com/simplito/bigint-wrapper-php/issues",
+                "source": "https://github.com/simplito/bigint-wrapper-php/tree/1.0.0"
+            },
+            "time": "2018-02-27T12:38:08+00:00"
+        },
+        {
+            "name": "simplito/bn-php",
+            "version": "1.1.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/simplito/bn-php.git",
+                "reference": "e852fcd27e4acbc32459606d7606e45a85e42465"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/simplito/bn-php/zipball/e852fcd27e4acbc32459606d7606e45a85e42465",
+                "reference": "e852fcd27e4acbc32459606d7606e45a85e42465",
+                "shasum": ""
+            },
+            "require": {
+                "simplito/bigint-wrapper-php": "~1.0.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "BN\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Simplito Team",
+                    "email": "s.smyczynski@simplito.com",
+                    "homepage": "https://simplito.com"
+                }
+            ],
+            "description": "Big number implementation compatible with bn.js",
+            "support": {
+                "issues": "https://github.com/simplito/bn-php/issues",
+                "source": "https://github.com/simplito/bn-php/tree/1.1.2"
+            },
+            "time": "2018-04-12T11:07:43+00:00"
+        },
+        {
+            "name": "simplito/elliptic-php",
+            "version": "1.0.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/simplito/elliptic-php.git",
+                "reference": "5cebaf29adce31a398368972a43d13def1e7ba15"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/simplito/elliptic-php/zipball/5cebaf29adce31a398368972a43d13def1e7ba15",
+                "reference": "5cebaf29adce31a398368972a43d13def1e7ba15",
+                "shasum": ""
+            },
+            "require": {
+                "ext-gmp": "*",
+                "simplito/bn-php": "~1.1.0"
+            },
+            "require-dev": {
+                "phpbench/phpbench": "@dev",
+                "phpunit/phpunit": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Elliptic\\": "lib/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Simplito Team",
+                    "email": "s.smyczynski@simplito.com",
+                    "homepage": "https://simplito.com"
+                }
+            ],
+            "description": "Fast elliptic curve cryptography",
+            "homepage": "https://github.com/simplito/elliptic-php",
+            "keywords": [
+                "Curve25519",
+                "ECDSA",
+                "Ed25519",
+                "EdDSA",
+                "cryptography",
+                "curve",
+                "curve25519-weier",
+                "ecc",
+                "ecdh",
+                "elliptic",
+                "nistp192",
+                "nistp224",
+                "nistp256",
+                "nistp384",
+                "nistp521",
+                "secp256k1"
+            ],
+            "support": {
+                "issues": "https://github.com/simplito/elliptic-php/issues",
+                "source": "https://github.com/simplito/elliptic-php/tree/1.0.8"
+            },
+            "time": "2021-07-09T08:28:19+00:00"
         },
         {
             "name": "symfony/amqp-messenger",
@@ -11621,14 +11979,17 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "digitaldonkey/ethereum-php": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=7.2.5",
+        "php": ">=7.4",
         "ext-ctype": "*",
-        "ext-iconv": "*"
+        "ext-iconv": "*",
+        "ext-json": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.1.0"
+    "plugin-api-version": "2.0.0"
 }
