@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Model\User\Service\NonceGenerator;
 use GuzzleHttp\Client;
 use Infrastructure\CommandHandling\CommandBusInterface;
 use Infrastructure\CommandHandling\SymfonyCommandBus;

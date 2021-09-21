@@ -53,8 +53,8 @@ class User implements UserInterface,UserPasswordHasherInterface
      */
     private $confirmToken;
     /**
-     * @var Name
-     * @ORM\Embedded(class="Name")
+     * @var Name|null
+     * @ORM\Embedded(class="Name", nullable=true)
      */
     private $name;
     /**
@@ -93,7 +93,7 @@ class User implements UserInterface,UserPasswordHasherInterface
      */
     private $version;
 
-    private function __construct(Id $id, \DateTimeImmutable $date, Name $name)
+    private function __construct(Id $id, \DateTimeImmutable $date, Name $name=null)
     {
         $this->id = $id;
         $this->date = $date;
@@ -144,6 +144,14 @@ class User implements UserInterface,UserPasswordHasherInterface
         return $user;
     }
 
+    public static function signUpByMetamask(Id $id, \DateTimeImmutable $date, string $identity): self
+    {
+        $user = new self($id, $date);
+        $user->attachCryptoWalletNetwork(Network::NETWORK_CRYPTO_WALLET, $identity);
+        $user->status = self::STATUS_ACTIVE;
+        return $user;
+    }
+
     public function attachNetwork(string $network, string $identity): void
     {
         foreach ($this->networks as $existing) {
@@ -152,6 +160,17 @@ class User implements UserInterface,UserPasswordHasherInterface
             }
         }
         $this->networks->add(new Network($this, $network, $identity));
+    }
+
+
+    public function attachCryptoWalletNetwork(string $network, string $identity): void
+    {
+        foreach ($this->networks as $existing) {
+            if ($existing->isForNetwork($network)) {
+                throw new \DomainException('Network is already attached.');
+            }
+        }
+        $this->networks->add(Network::createCryptoWalletNetwork($this, $identity));
     }
 
     public function detachNetwork(string $network, string $identity): void
