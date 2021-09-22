@@ -11,5 +11,10 @@ class Command
     /**
      * @Assert\NotBlank()
      */
-    public $wallet;
+    public string $wallet;
+
+    public function __construct(string $wallet)
+    {
+        $this->wallet = $wallet;
+    }
 }
