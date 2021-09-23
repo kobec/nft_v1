@@ -4,19 +4,23 @@ declare(strict_types=1);
 
 namespace App\Model\User\Service;
 
-use Ramsey\Uuid\Uuid;
 use Webmozart\Assert\Assert;
+use Exception;
 
 class NonceGenerator
 {
-    private $value;
+    private string $value;
 
     public function __construct(string $value)
     {
         Assert::notEmpty($value);
+
         $this->value = $value;
     }
 
+    /**
+     * @throws Exception
+     */
     public static function next(): self
     {
         return new self(bin2hex(random_bytes(16)));

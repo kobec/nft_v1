@@ -9,11 +9,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Exception;
 
 /**
  * @ORM\Entity
  * @ORM\HasLifecycleCallbacks
  * @ORM\Table(name="user_users", uniqueConstraints={
+ *     @ORM\UniqueConstraint(columns={"username"}),
  *     @ORM\UniqueConstraint(columns={"email"}),
  *     @ORM\UniqueConstraint(columns={"reset_token_token"})
  * })
@@ -38,6 +40,11 @@ class User implements UserInterface,UserPasswordHasherInterface
      */
     private $date;
     /**
+     * @var string|null
+     * @ORM\Column(type="string", name="username", nullable=true)
+     */
+    private $username;
+    /**
      * @var Email|null
      * @ORM\Column(type="user_user_email", nullable=true)
      */
@@ -54,7 +61,7 @@ class User implements UserInterface,UserPasswordHasherInterface
     private $confirmToken;
     /**
      * @var Name|null
-     * @ORM\Embedded(class="Name", nullable=true)
+     * @ORM\Embedded(class="Name")
      */
     private $name;
     /**
@@ -144,10 +151,14 @@ class User implements UserInterface,UserPasswordHasherInterface
         return $user;
     }
 
+    /**
+     * @throws Exception
+     */
     public static function signUpByMetamask(Id $id, \DateTimeImmutable $date, string $identity): self
     {
         $user = new self($id, $date);
         $user->attachCryptoWalletNetwork(Network::NETWORK_CRYPTO_WALLET, $identity);
+        $user->setUsername($identity);
         $user->status = self::STATUS_ACTIVE;
         return $user;
     }
@@ -162,7 +173,9 @@ class User implements UserInterface,UserPasswordHasherInterface
         $this->networks->add(new Network($this, $network, $identity));
     }
 
-
+    /**
+     * @throws Exception
+     */
     public function attachCryptoWalletNetwork(string $network, string $identity): void
     {
         foreach ($this->networks as $existing) {
@@ -351,6 +364,11 @@ class User implements UserInterface,UserPasswordHasherInterface
         return $this->networks->toArray();
     }
 
+    public function getFirstNetwork(): Network
+    {
+        return $this->networks->first();
+    }
+
     /**
      * @ORM\PostLoad()
      */
@@ -381,12 +399,18 @@ class User implements UserInterface,UserPasswordHasherInterface
     {
     }
 
-    public function getUsername()
+    public function setUsername(string $username): void
     {
-        return $this->email->getValue();
+        $this->username = $username;
     }
 
-    public function getUserIdentifier(){
+    public function getUsername(): ?string
+    {
+        return $this->username;
+    }
+
+    public function getUserIdentifier()
+    {
         return $this->id->getValue();
     }
 }

@@ -14,36 +14,33 @@ class Name
 {
     /**
      * @var string
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
-    private $first;
+    private ?string $first;
     /**
      * @var string
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", nullable=true)
      */
-    private $last;
+    private ?string $last;
 
-    public function __construct(string $first, string $last)
+    public function __construct(?string $first, ?string $last)
     {
-        Assert::notEmpty($first);
-        Assert::notEmpty($last);
-
         $this->first = $first;
         $this->last = $last;
     }
 
     public function getFirst(): string
     {
-        return $this->first;
+        return $this->first ?? '';
     }
 
     public function getLast(): string
     {
-        return $this->last;
+        return $this->last ?? '';
     }
 
     public function getFull(): string
     {
-        return $this->first . ' ' . $this->last;
+        return trim($this->first . ' ' . $this->last);
     }
 }

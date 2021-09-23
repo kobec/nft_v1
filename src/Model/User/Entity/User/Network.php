@@ -8,6 +8,7 @@ use App\Model\User\Service\NonceGenerator;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Webmozart\Assert\Assert;
+use Exception;
 
 /**
  * @ORM\Entity
@@ -43,7 +44,7 @@ class Network
 
     /**
      * @var string
-     * @ORM\Column(type="string", length=32, nullable=true)
+     * @ORM\Column(type="string", length=64, nullable=true)
      */
     private $identity;
 
@@ -63,21 +64,27 @@ class Network
     }
 
 
-    public static function createCryptoWalletNetwork(User $user, string $identity)
+    /**
+     * @throws Exception
+     */
+    public static function createCryptoWalletNetwork(User $user, string $identity): Network
     {
         $entity = new self($user, self::NETWORK_CRYPTO_WALLET, $identity);
         $entity->generateBlockChainAuthNonce();
         return $entity;
     }
 
+    /**
+     * @throws Exception
+     */
     private function generateBlockChainAuthNonce(): void
     {
-        $this->data = ['nonce' => NonceGenerator::next()];
+        $this->data = ['nonce' => (string) NonceGenerator::next()];
     }
 
-    public function getBlockChainAuthNonce(): string
+    public function getBlockChainAuthNonce(): ?string
     {
-        return $this->data['nonce'] ?? '';
+        return $this->data['nonce'] ?? null;
     }
 
     public function isFor(string $network, string $identity): bool
