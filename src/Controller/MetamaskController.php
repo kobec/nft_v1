@@ -6,7 +6,10 @@ namespace App\Controller;
 
 use App\Model\User\Entity\User\Network;
 use App\ReadModel\User\UserFetcher;
+use App\Model\User\Entity\User\UserRepository;
+use App\Model\User\Entity\User\Id;
 use Infrastructure\CommandHandling\CommandBusInterface;
+use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,13 +21,17 @@ use Exception;
 class MetamaskController extends AbstractController
 {
     private UserFetcher $userFetcher;
+    private UserRepository $userRepository;
+    private JWTTokenManagerInterface $JWTTokenManager;
     private CommandBusInterface $commandBus;
 
     private const SIGN_MESSAGE = 'I am signing my one-time nonce: ';
 
-    public function __construct(UserFetcher $userFetcher, CommandBusInterface $commandBus)
+    public function __construct(UserFetcher $userFetcher, UserRepository $userRepository, JWTTokenManagerInterface $JWTTokenManager, CommandBusInterface $commandBus)
     {
         $this->userFetcher = $userFetcher;
+        $this->userRepository = $userRepository;
+        $this->JWTTokenManager = $JWTTokenManager;
         $this->commandBus = $commandBus;
     }
 
@@ -46,10 +53,12 @@ class MetamaskController extends AbstractController
             // Verify digital signature
             $recoveredIdentity = Ethereum::personalEcRecover($signMessage, new EthD($signature));
 
-            if ($success = ($recoveredIdentity && $networkIdentity && strtoupper($recoveredIdentity) === strtoupper($networkIdentity))) {
-                // TODO: Implement user authentication
+            if ($recoveredIdentity && $networkIdentity && strtoupper($recoveredIdentity) === strtoupper($networkIdentity)) {
+                $user = $this->userRepository->get(new Id($data->getUserId()));
 
-                return $this->json(compact('success'));
+                $token = $this->JWTTokenManager->create($user);
+
+                return $this->json(compact('token'));
             }
         }
 
@@ -86,7 +95,12 @@ class MetamaskController extends AbstractController
     {
         // We are looking for a user at the networkIdentity if there is then we return networkIdentity, nonce
         if ($data = $this->userFetcher->getByNetworkIdentity(Network::NETWORK_CRYPTO_WALLET, $networkIdentity)) {
-            return $this->json($data->toArray());
+            // Nonce regeneration
+            $this->commandBus->dispatchNow(new \App\Model\User\UseCase\Network\RefreshBlockChainAuthNonce\Command($data->getNetworkName(), $data->getNetworkIdentity()));
+
+            $result = $this->userFetcher->getByNetworkIdentity($data->getNetworkName(), $data->getNetworkIdentity());
+
+            return $this->json($result->toArray());
         }
 
         return $this->json([], 404);

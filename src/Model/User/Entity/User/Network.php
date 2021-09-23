@@ -24,12 +24,14 @@ class Network
      * @ORM\Id
      */
     private $id;
+
     /**
      * @var User
      * @ORM\ManyToOne(targetEntity="User", inversedBy="networks")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private $user;
+
     /**
      * @var string
      * @ORM\Column(type="string", length=32, nullable=true)
@@ -37,7 +39,7 @@ class Network
     private $network;
 
     /**
-     * @var string
+     * @var array
      * @ORM\Column(type="json", nullable=true)
      */
     private $data;
@@ -79,7 +81,17 @@ class Network
      */
     private function generateBlockChainAuthNonce(): void
     {
-        $this->data = ['nonce' => (string) NonceGenerator::next()];
+        $this->data = $this->data ?? [];
+
+        $this->data['nonce'] = (string) NonceGenerator::next();
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function refreshBlockChainAuthNonce(): void
+    {
+        $this->generateBlockChainAuthNonce();
     }
 
     public function getBlockChainAuthNonce(): ?string

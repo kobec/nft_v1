@@ -28,6 +28,7 @@ class SymfonyCommandBus implements CommandBusInterface, ServiceSubscriberInterfa
             \App\Model\Contract\UseCase\NftTx\CreateByParser\Command::class                 => \App\Model\Contract\UseCase\NftTx\CreateByParser\Handler::class,
             \App\Model\Contract\UseCase\Nft\CreateByNftTxTransactionCallBack\Command::class => \App\Model\Contract\UseCase\Nft\CreateByNftTxTransactionCallBack\Handler::class,
             \App\Model\User\UseCase\SignUp\ByMetamask\Command::class => \App\Model\User\UseCase\SignUp\ByMetamask\Handler::class,
+            \App\Model\User\UseCase\Network\RefreshBlockChainAuthNonce\Command::class => \App\Model\User\UseCase\Network\RefreshBlockChainAuthNonce\Handler::class,
         ];
     }
 

@@ -6,6 +6,7 @@ namespace App\Model\User\Entity\User;
 
 use App\Model\EntityNotFoundException;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
 
 class UserRepository
 {
@@ -75,6 +76,26 @@ class UserRepository
                 ->setParameter(':network', $network)
                 ->setParameter(':identity', $identity)
                 ->getQuery()->getSingleScalarResult() > 0;
+    }
+
+    /**
+     * @throws NonUniqueResultException
+     */
+    public function getByNetworkIdentity(string $network, string $identity): User
+    {
+        $query = $this->repo->createQueryBuilder('t')
+            ->select('t', 'n')
+            ->innerJoin('t.networks', 'n')
+            ->where('n.network = :network and n.identity = :identity')
+            ->setParameter(':network', $network)
+            ->setParameter(':identity', $identity)
+            ->getQuery();
+
+        if (! $user = $query->getOneOrNullResult()) {
+            throw new EntityNotFoundException('User is not found.');
+        }
+
+        return $user;
     }
 
     public function add(User $user): void
