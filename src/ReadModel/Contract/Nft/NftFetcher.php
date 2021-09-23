@@ -35,7 +35,8 @@ class NftFetcher
             ->from('contract_nft', 'nft')
             ->leftJoin('nft', 'contract_contracts', 'contract', 'nft.contract_id = contract.id')
             ->where('contract.address=:contract_address')
-            ->setParameter('contract_address', $contract);
+            ->setParameter('contract_address', $contract)
+            ->groupBy('nft.id');
         return $this->paginator->paginate($qb, $page, $size);
     }
 
@@ -50,8 +51,9 @@ class NftFetcher
             ->leftJoin('nft', 'contract_contracts', 'contract', 'nft.contract_id = contract.id')
             ->where('contract.address=:contract_address')
             ->setParameter('contract_address', $contract)
-            ->where('nft.token_id=:token_id')
+            ->andWhere('nft.token_id=:token_id')
             ->setParameter('token_id', $tokenId)
+            ->groupBy('nft.id')
             ->execute();
         if (!$token = $qb->fetchAssociative()) {
             throw new NotFoundException('Token is not found is not found');

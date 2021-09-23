@@ -6,7 +6,27 @@
 parameters:
     ropsten.api.url: 'https://api-ropsten.etherscan.io/api'
     ropsten.api.key: 'FKQFUP47GG13YNJ7MHFZP5NWKP2T3Y2WKU'
-    ropsten.api.contract: '0xfaCf2DeE4197560D74E26C1158D17152b5384F2e'
+    ropsten.api.contract: '0x6392FA3C834D7AdC00466e203Aa411Ea374d6771'
+    #ropsten.api.contract: '0xEC0386e66032DEFB3B0C8a12c49b45D4633d4c0F'
+    #ropsten.api.contract: '0x48bB11681B1980df525fA2B598BAda52ADA26fF9'
+    #ropsten.api.contract: '0x1Bd11752A557c0B9Db7E5EE4ae894Eec8a1d3179'
+    #ropsten.api.contract: '0x85F429688dBcEB0BB4aF0987C32Cab597001C68E'
+    #ropsten.api.contract: '0x47C03BBE8Bab8D147008D392b2270849211C2C5a'
+    #ropsten.api.contract: '0x5a6dF5ef66500Ad0b281e947341E47caE3ddE630'
+    #ropsten.api.contract: '0xB6b35762f6A3629E8f8ef6D81E6E9128e7Fd2a2f'
+    #ropsten.api.contract: '0x14BE7252B2C015948D3ded44d3d091c9B9e51cE9'
+    #ropsten.api.contract: '0x211496633AA8Ed232FaA775d6Fe7BA4Cf930DEA8'
+    #ropsten.api.contract: '0x6Fb47f04887eB1b9B4d12507f1860c73e2677C9c'
+    #ropsten.api.contract: '0x153628F9cF259d5B2d5edA6cb2dCc08Db5772C84'
+    #ropsten.api.contract: '0x313eFA3D0218e619E3957A5D02492549D9D4EaEf'
+    #ropsten.api.contract: '0x027eDB67592921E268DF58a0b5fA88DA9bcE01A4'
+    #ropsten.api.contract: '0xd66543C5396FC8F412BE04A6299c6565F9dCa109'
+    #ropsten.api.contract: '0xc86D05dBDC89E3760998496B02133d5851B64971'
+    #ropsten.api.contract: '0xa780f57079aF954f6ab48d806172A0888FBC62C7'
+    #ropsten.api.contract: '0x7B5532da5274A0094f33D3d72bc614c4c18Be56A'
+    #ropsten.api.contract: '0x07a0a52060a065fEb86D34DFFE521378037C12E4'
+    #ropsten.api.contract: '0x6BCbfBC731a33571dc2B9D62B3E80a34d3D6557C'
+    #ropsten.api.contract: '0xfaCf2DeE4197560D74E26C1158D17152b5384F2e'
 
 services:
     # default configuration for services in *this* file
