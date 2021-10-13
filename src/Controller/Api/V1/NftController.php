@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class NftController extends AbstractController
 {
 
-    private const PER_PAGE = 2;
+    private const PER_PAGE = 6;
     private NftFetcher $nftFetcher;
     private ContainerBagInterface $parameters;
 
